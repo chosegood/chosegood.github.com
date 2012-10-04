@@ -8,5 +8,17 @@
   </body>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      var gitHubUrl = 'api.github.com';
+      $.ajax(
+        {url: 'https://api.github.com/users/chosegood/repos'}
+      ).done(function (data) {
+          console.log('done');
+      }).fail(function() {
+          console.log('fail');
+        });
+    });
+  </script>
 
 </html>
