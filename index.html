@@ -1,23 +1,51 @@
 <html>
+
   <head>
     <title>chosegood github</title>
+    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
   </head>
 
   <body>
     <h1>Current Projects</h1>
+    <div id="projects">Loading...</div>
   </body>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.1/underscore-min.js"></script>
+
   <script>
     $(document).ready(function() {
-      var gitHubUrl = 'api.github.com';
       $.ajax(
-        {url: 'https://api.github.com/users/chosegood/repos'}
+        {
+          url: 'https://api.github.com/users/chosegood/repos',
+          dataType: "jsonp"
+        }
       ).done(function (data) {
-          console.log('done');
-      }).fail(function() {
-          console.log('fail');
+        var $ul = $('<ul/>');
+
+        _.each(data.data, function(repo) {
+          $("<li><a/></li>")
+            .find('a')
+            .attr('href', repo.html_url)
+            .html(repo.full_name)
+            .end()
+            .appendTo($ul);
         });
+        
+        $('#projects')
+          .removeClass('text-error')
+          .empty()
+          .append($ul);
+
+      }).fail(function() {
+        var $frag = $('<strong/>').html('Error loading projects')
+          .append('<br/>')
+          .append("Please try again later when I don't suck");
+        $('#projects')
+          .addClass('text-error')
+          .empty()
+          .append($frag);
+      });
     });
   </script>
 
